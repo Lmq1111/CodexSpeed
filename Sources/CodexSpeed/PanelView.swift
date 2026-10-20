@@ -58,7 +58,7 @@ struct PanelView: View {
             Text("打开一个 Codex 对话，或选择任务并固定。") .font(.system(size: 12)).foregroundStyle(.secondary)
             if !model.resolution.trusted { Button("开启辅助功能权限") { model.resolver.requestPermission() } }
             Button("选择对话") { model.chooser = true; model.refreshCatalog() }
-            if let error = model.error { Text(error).font(.system(size: 11)).foregroundStyle(.secondary) }
+            if let error = model.displayedError { Text(error).font(.system(size: 11)).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true).help(model.catalogErrorDetail ?? error) }
         }.frame(maxWidth: .infinity).padding(.horizontal, 18).padding(.vertical, 42)
     }
     private var chooser: some View {
@@ -90,7 +90,7 @@ struct PanelView: View {
             if model.connection != .connected {
                 notice("实时连接不可用 · 显示已记录结果")
             }
-            if let error = model.error { notice(error) }
+            if let error = model.displayedError { notice(error).help(model.catalogErrorDetail ?? error) }
             if !model.resolution.trusted {
                 Button("开启自动跟随权限") { model.resolver.requestPermission() }
                     .font(.system(size: 11)).padding(.bottom, 10)
@@ -257,6 +257,7 @@ struct PanelView: View {
     }
     private func notice(_ text: String) -> some View {
         Text(text).font(.system(size: 11)).foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 17).padding(.bottom, 10)
     }
     private func statCell(_ title: String, _ value: String) -> some View {

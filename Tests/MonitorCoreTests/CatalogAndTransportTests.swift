@@ -21,6 +21,39 @@ final class CatalogTests: XCTestCase {
         let rows = try ConversationCatalog.read(home:directory)
         XCTAssertEqual(rows.map(\.title),["显示的会话标题","旧版标题"])
     }
+    func testBusyCatalogCanRecoverWithoutChangingTheDatabase() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        var db: OpaquePointer?
+        XCTAssertEqual(sqlite3_open(directory.appendingPathComponent("state_5.sqlite").path, &db), SQLITE_OK)
+        defer { sqlite3_close(db) }
+        XCTAssertEqual(sqlite3_exec(db, "CREATE TABLE threads(id TEXT,title TEXT,name TEXT,cwd TEXT,rollout_path TEXT,model TEXT,archived INTEGER,updated_at INTEGER); BEGIN EXCLUSIVE;", nil, nil, nil), SQLITE_OK)
+        XCTAssertThrowsError(try ConversationCatalog.read(home: directory)) { error in
+            let failure = error as? ConversationCatalog.CatalogError
+            XCTAssertEqual(failure?.code, SQLITE_BUSY)
+            XCTAssertTrue(error.localizedDescription.contains("数据库正忙"))
+            XCTAssertFalse(failure?.detail.isEmpty ?? true)
+        }
+        XCTAssertEqual(sqlite3_exec(db, "ROLLBACK", nil, nil, nil), SQLITE_OK)
+        XCTAssertEqual(try ConversationCatalog.read(home: directory), [])
+    }
+
+    func testSchemaFailureIncludesSQLiteDetails() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        var db: OpaquePointer?
+        XCTAssertEqual(sqlite3_open(directory.appendingPathComponent("state_5.sqlite").path, &db), SQLITE_OK)
+        sqlite3_close(db)
+        XCTAssertThrowsError(try ConversationCatalog.read(home: directory)) { error in
+            let failure = error as? ConversationCatalog.CatalogError
+            XCTAssertEqual(failure?.code, SQLITE_ERROR)
+            XCTAssertTrue(error.localizedDescription.contains("查询对话目录失败"))
+            XCTAssertTrue(failure?.detail.contains("threads") == true)
+        }
+    }
+
 }
 
 final class TransportTests: XCTestCase {

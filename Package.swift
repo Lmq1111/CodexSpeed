@@ -8,6 +8,7 @@ let package = Package(
         .systemLibrary(name: "CSQLite"),
         .target(name: "MonitorCore", dependencies: ["CSQLite", .product(name: "SwiftTiktoken", package: "swift-tiktoken")], resources: [.copy("o200k_base.tiktoken")]),
         .executableTarget(name: "CodexSpeed", dependencies: ["MonitorCore"], linkerSettings: [.linkedFramework("AppKit"), .linkedFramework("ApplicationServices")]),
-        .testTarget(name: "MonitorCoreTests", dependencies: ["MonitorCore"])
+        .testTarget(name: "MonitorCoreTests", dependencies: ["MonitorCore"]),
+        .testTarget(name: "CodexSpeedTests", dependencies: ["CodexSpeed"])
     ], swiftLanguageModes: [.v5]
 )

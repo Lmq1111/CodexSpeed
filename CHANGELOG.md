@@ -7,6 +7,13 @@ Version numbers below describe local development milestones. They do not imply t
 - Prepare the public repository with English and Simplified Chinese documentation, MIT licensing, third-party notices, synthetic native UI previews, contribution/issue templates, and macOS CI.
 - Include project and tokenizer license notices in newly built app bundles.
 
+## 0.4.2 — 2026-10-20
+
+- Clear stale catalog-error messages after a successful refresh, including unchanged lists.
+- Keep catalog failures separate from independent service errors.
+- Show readable SQLite error reasons with details on hover; reject incomplete query results.
+- Add regression tests for error recovery, independent errors, database contention, and schema failures.
+
 ## 0.4.1 — 2026-10-19
 
 - Reduce the displayed body-speed window from ten to five eligible requests.

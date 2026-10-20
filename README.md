@@ -115,7 +115,7 @@ CodexSpeed reads the local IPC socket, the conversation catalog in `~/.codex`, t
 
 Assistant text is processed in memory. Local caches contain numeric summaries, identifiers, and log read offsets/paths; optional diagnostics also contain identifiers and status information. They are **not anonymous**, and should be reviewed before sharing. No chat-body copy is intentionally persisted by CodexSpeed. See [security and data handling](SECURITY.md).
 
-If the stream disconnects or becomes incompatible, the app reconnects with backoff and retains recorded results. Live status may be unavailable; retained numbers are not evidence of ongoing generation. Known limitations, including a stale catalog-error banner in v0.4.1, are documented in [troubleshooting](docs/troubleshooting.md).
+If the stream disconnects or becomes incompatible, the app reconnects with backoff and retains recorded results. Live status may be unavailable; retained numbers are not evidence of ongoing generation. Catalog errors clear automatically when a later refresh succeeds. Permission, connection, and catalog issues are covered in [troubleshooting](docs/troubleshooting.md).
 
 ## Development
 

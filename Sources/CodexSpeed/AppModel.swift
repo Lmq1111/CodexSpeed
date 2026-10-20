@@ -14,6 +14,8 @@ import MonitorCore
     @Published var previous = false
     @Published var panelVisible = false
     @Published var error: String?
+    @Published private(set) var catalogError: String?
+    @Published private(set) var catalogErrorDetail: String?
     @Published var search = ""
     let resolver = ConversationResolver()
     let service = MonitorService()
@@ -70,8 +72,22 @@ import MonitorCore
     }
     func refreshCatalog() {
         catalogQueue.async { [weak self] in
-            do { let rows = try ConversationCatalog.read(); DispatchQueue.main.async { self?.acceptCatalog(rows) } }
-            catch { DispatchQueue.main.async { self?.error = "无法读取对话目录：\(error.localizedDescription)" } }
+            let result = Result { try ConversationCatalog.read() }
+            DispatchQueue.main.async { self?.acceptCatalogResult(result) }
+        }
+    }
+    var displayedError: String? {
+        let messages = [catalogError, error].compactMap { $0 }
+        return messages.isEmpty ? nil : messages.joined(separator: "\n")
+    }
+    func acceptCatalogResult(_ result: Result<[Conversation], Error>) {
+        switch result {
+        case .success(let rows):
+            catalogError = nil; catalogErrorDetail = nil
+            acceptCatalog(rows)
+        case .failure(let failure):
+            catalogError = "无法读取对话目录：\(failure.localizedDescription)"
+            catalogErrorDetail = (failure as? LocalizedError)?.failureReason
         }
     }
     private func acceptCatalog(_ rows: [Conversation]) {

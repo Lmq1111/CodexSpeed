@@ -16,7 +16,9 @@ Keep the same signing identity across updates. If authorization stops working af
 
 ## Catalog error remains after recovery
 
-**Known issue in v0.4.1:** a failed catalog refresh can leave an old error message visible even after later queries succeed. The catalog and the selected thread's stream/log reads are separate. This banner alone does not establish that the stream is disconnected. Restarting CodexSpeed clears the in-memory banner; if it returns, report the complete error and app/Codex versions. The old generic error does not retain enough detail to diagnose the original SQLite failure.
+Fixed in v0.4.2: after a complete successful refresh, the catalog error clears automatically, even when the conversation list is unchanged. Independent service errors remain visible. Older versions can leave a stale banner; update to v0.4.2 or later.
+
+If a catalog error persists, the panel shows a readable reason and SQLite code; hover over it for the underlying database detail. Refreshes retry automatically. An incomplete/failed query preserves the last successful catalog rather than accepting a partial result. Catalog reads and the selected thread's stream/log reads are separate; this banner alone does not establish that the stream is disconnected.
 
 ## Speed is missing or remains unchanged
 
