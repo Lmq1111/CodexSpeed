@@ -1,0 +1,38 @@
+name: Bug report / 问题反馈
+description: Report a reproducible issue with CodexSpeed / 报告可复现的问题
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Use synthetic examples. Do not attach private rollout logs, caches, tokens, or conversation text. / 请使用构造样本，不上传私有日志、缓存、令牌或聊天内容。"
+  - type: input
+    id: versions
+    attributes:
+      label: Versions / 版本
+      description: CodexSpeed version or commit, Codex desktop version, macOS version, chip, and Xcode version if building.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce / 复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior / 预期与实际表现
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context / 补充信息
+      description: Follow or pinned mode? Current or previous turn? Redacted screenshots and error messages are useful.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting / 提交前
+      options:
+        - label: I have removed private conversation content, identifiers, paths, and credentials. / 已清理私有聊天、标识符、路径和凭证。
+          required: true

@@ -1,0 +1,12 @@
+.build/
+.swiftpm/
+dist/
+.DS_Store
+.local-notes/
+.env
+.env.*
+*.p12
+*.pfx
+*.mobileprovision
+*.provisionprofile
+*.xcuserstate
