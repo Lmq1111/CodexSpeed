@@ -34,7 +34,7 @@ A **request** is a model response. A **turn** is the work associated with a user
 
 For a turn, complete `turn_token_usage` values replace previous values rather than being added repeatedly. Request IDs are deduplicated. Conversation totals prefer `thread_token_usage` over older `token_count` summaries.
 
-Cached input is already part of input. Reasoning is already part of output. Neither is added a second time. Cache hit is computed within the same turn, and omitted when input is zero or unavailable. Context occupancy uses the latest request total and reported context window, not accumulated conversation usage.
+Cached input is already part of input. Reasoning is already part of output. Neither is added a second time. Cache hit is computed within the same turn, displayed as a percentage rounded to two decimal places, and omitted when input is zero or unavailable. Context occupancy uses the latest request total and reported context window, not accumulated conversation usage.
 
 ## Unknown and disconnected data
 

@@ -133,7 +133,7 @@ struct PanelView: View {
                         VStack(spacing: 8) {
                             pair("输入", number(usage.input))
                             if let hit = usage.hit {
-                                pair("缓存命中", String(format: "%.0f%%", hit * 100))
+                                pair("缓存命中", String(format: "%.2f%%", hit * 100))
                                     .help("缓存输入 " + number(usage.cached) + " token ÷ 本轮输入；缓存已包含在输入中。")
                             }
                         }

@@ -7,6 +7,10 @@ Version numbers below describe local development milestones. They do not imply t
 - Prepare the public repository with English and Simplified Chinese documentation, MIT licensing, third-party notices, synthetic native UI previews, contribution/issue templates, and macOS CI.
 - Include project and tokenizer license notices in newly built app bundles.
 
+## 0.4.3 — 2026-10-21
+
+- Display cache hit rates with two decimal places (for example, 99.84% instead of rounding to 100%). The calculation and turn scope are unchanged.
+
 ## 0.4.2 — 2026-10-20
 
 - Clear stale catalog-error messages after a successful refresh, including unchanged lists.
